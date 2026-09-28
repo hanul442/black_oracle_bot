@@ -56,7 +56,7 @@ function parseSource(value: unknown, index: number): SourceRecord {
   if (!isNonEmptyString(v.key)) throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].key is required`);
   if (!isNonEmptyString(v.name)) throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].name is required`);
   if (!v.type || !SOURCE_TYPES.has(v.type)) throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].type is invalid`);
-  if (!isNonEmptyString(v.endpoint) || !/^https?:\\/\\//i.test(v.endpoint)) {
+  if (!isNonEmptyString(v.endpoint) || !(v.endpoint.toLowerCase().startsWith('http://') || v.endpoint.toLowerCase().startsWith('https://'))) {
     throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].endpoint must be http(s)`);
   }
   if (!v.verificationState || !VERIFICATION_STATES.has(v.verificationState)) {

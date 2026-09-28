@@ -1,5 +1,9 @@
 export type SourceType = 'rss' | 'api' | 'filing' | 'government' | 'research' | 'newsletter' | 'social' | 'other';
 
+export type SourceVerificationState = 'unreviewed' | 'provisional' | 'reviewed' | 'suspended';
+export type SourceFreshnessState = 'unknown' | 'current' | 'stale';
+export type SourceAvailabilityState = 'primary' | 'fallback' | 'failed';
+
 export type SourceRecord = {
   key: string;
   name: string;
@@ -8,6 +12,12 @@ export type SourceRecord = {
   country?: string;
   language?: string;
   tier?: number;
+  verificationState: SourceVerificationState;
+  freshnessState: SourceFreshnessState;
+  availabilityState: SourceAvailabilityState;
+  assessedAt: string;
+  fallbackSourceKey?: string;
+  failureCode?: string;
   metadata?: Record<string, unknown>;
 };
 

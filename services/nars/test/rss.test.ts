@@ -10,6 +10,10 @@ const source: SourceRecord = {
   endpoint: 'https://example.com/feed.xml',
   language: 'ko',
   tier: 2,
+  verificationState: 'reviewed',
+  freshnessState: 'current',
+  availabilityState: 'primary',
+  assessedAt: '2026-09-28T00:00:00.000Z',
 };
 
 test('parses RSS including CDATA, entities and breaking flag', () => {

@@ -4,6 +4,25 @@ import type { Env, QueueMessage, SourceRecord } from './types.ts';
 
 const USER_AGENT = 'NARS-v4/4.0 (+https://github.com/hanul442/Black-oracle)';
 
+function sourceEnvelope(source: SourceRecord): QueueMessage['source'] {
+  return {
+    key: source.key,
+    name: source.name,
+    type: source.type,
+    endpoint: source.endpoint,
+    country: source.country,
+    language: source.language,
+    tier: source.tier,
+    verificationState: source.verificationState,
+    freshnessState: source.freshnessState,
+    availabilityState: source.availabilityState,
+    assessedAt: source.assessedAt,
+    fallbackSourceKey: source.fallbackSourceKey,
+    failureCode: source.failureCode,
+    metadata: source.metadata,
+  };
+}
+
 async function reportSourceStatus(env: Env, source: SourceRecord, ok: boolean, error?: string): Promise<void> {
   const response = await fetch(`${env.SUPABASE_URL.replace(/\/$/, '')}/functions/v1/nars-source-status`, {
     method: 'POST',
@@ -12,16 +31,7 @@ async function reportSourceStatus(env: Env, source: SourceRecord, ok: boolean, e
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      source: {
-        key: source.key,
-        name: source.name,
-        type: source.type,
-        endpoint: source.endpoint,
-        country: source.country,
-        language: source.language,
-        tier: source.tier,
-        metadata: source.metadata,
-      },
+      source: sourceEnvelope(source),
       ok,
       error: error?.slice(0, 1000),
     }),
@@ -45,16 +55,7 @@ async function fetchSource(source: SourceRecord): Promise<QueueMessage[]> {
     const docs = parseFeed(xml, source);
     const fetchedAt = new Date().toISOString();
     return docs.map((document) => ({
-      source: {
-        key: source.key,
-        name: source.name,
-        type: source.type,
-        endpoint: source.endpoint,
-        country: source.country,
-        language: source.language,
-        tier: source.tier,
-        metadata: source.metadata,
-      },
+      source: sourceEnvelope(source),
       document,
       fetchedAt,
       attempt: 0,

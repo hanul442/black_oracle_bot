@@ -16,6 +16,37 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+function isValidTimestamp(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/.exec(value);
+  if (!match) return false;
+
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText, , offsetHourText, offsetMinuteText] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+  const second = Number(secondText);
+  const offsetHour = offsetHourText === undefined ? 0 : Number(offsetHourText);
+  const offsetMinute = offsetMinuteText === undefined ? 0 : Number(offsetMinuteText);
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
+
+  return (
+    month >= 1 &&
+    month <= 12 &&
+    day >= 1 &&
+    day <= daysInMonth &&
+    hour <= 23 &&
+    minute <= 59 &&
+    second <= 59 &&
+    offsetHour <= 23 &&
+    offsetMinute <= 59 &&
+    !Number.isNaN(Date.parse(value))
+  );
+}
+
 function parseSource(value: unknown, index: number): SourceRecord {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}] must be an object`);
@@ -25,7 +56,7 @@ function parseSource(value: unknown, index: number): SourceRecord {
   if (!isNonEmptyString(v.key)) throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].key is required`);
   if (!isNonEmptyString(v.name)) throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].name is required`);
   if (!v.type || !SOURCE_TYPES.has(v.type)) throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].type is invalid`);
-  if (!isNonEmptyString(v.endpoint) || !/^https?:\/\//i.test(v.endpoint)) {
+  if (!isNonEmptyString(v.endpoint) || !/^https?:\\/\\//i.test(v.endpoint)) {
     throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].endpoint must be http(s)`);
   }
   if (!v.verificationState || !VERIFICATION_STATES.has(v.verificationState)) {
@@ -37,7 +68,7 @@ function parseSource(value: unknown, index: number): SourceRecord {
   if (!v.availabilityState || !AVAILABILITY_STATES.has(v.availabilityState)) {
     throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].availabilityState is invalid`);
   }
-  if (!isNonEmptyString(v.assessedAt) || Number.isNaN(Date.parse(v.assessedAt))) {
+  if (!isValidTimestamp(v.assessedAt)) {
     throw new Error(`NARS_SOURCE_CONFIG_JSON[${index}].assessedAt must be a valid timestamp`);
   }
   if (v.availabilityState === 'fallback' && !isNonEmptyString(v.fallbackSourceKey)) {

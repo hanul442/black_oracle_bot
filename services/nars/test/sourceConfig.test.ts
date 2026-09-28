@@ -38,9 +38,35 @@ test('rejects legacy source config that omits the assessment contract', () => {
   assert.throws(() => readSourceConfig(envWith([legacy])), /verificationState/);
 });
 
+test('requires verificationState independently', () => {
+  const { verificationState: _verificationState, ...withoutVerificationState } = base;
+  assert.throws(() => readSourceConfig(envWith([withoutVerificationState])), /verificationState/);
+});
+
+test('requires freshnessState independently', () => {
+  const { freshnessState: _freshnessState, ...withoutFreshnessState } = base;
+  assert.throws(() => readSourceConfig(envWith([withoutFreshnessState])), /freshnessState/);
+});
+
+test('requires availabilityState independently', () => {
+  const { availabilityState: _availabilityState, ...withoutAvailabilityState } = base;
+  assert.throws(() => readSourceConfig(envWith([withoutAvailabilityState])), /availabilityState/);
+});
+
 test('requires assessedAt', () => {
   const { assessedAt: _assessedAt, ...withoutAssessedAt } = base;
   assert.throws(() => readSourceConfig(envWith([withoutAssessedAt])), /assessedAt/);
+});
+
+test('rejects assessedAt with an impossible calendar date', () => {
+  assert.throws(
+    () => readSourceConfig(envWith([{ ...base, assessedAt: '2026-02-31T00:00:00Z' }])),
+    /assessedAt/,
+  );
+});
+
+test('rejects assessedAt without an explicit timestamp and timezone', () => {
+  assert.throws(() => readSourceConfig(envWith([{ ...base, assessedAt: 'not-a-date' }])), /assessedAt/);
 });
 
 test('requires fallbackSourceKey when availability is fallback', () => {

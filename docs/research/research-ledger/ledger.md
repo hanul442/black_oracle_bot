@@ -1,6 +1,6 @@
 # BLACK ORACLE Research Ledger
 
-Last updated: 2026-09-23 — Cycle 013
+Last updated: 2026-09-30 — Cycle 034
 
 | ID | Domain | Topic | Evidence | Status | Experiment | Production impact |
 |---|---|---|---|---|---|---|
@@ -35,6 +35,19 @@ Last updated: 2026-09-23 — Cycle 013
 | Q-003 | Quant + Evidence | Market-neutrality intent vs measured realized exposure constraints | B+ peer-reviewed recent paper | REFERENCE / TEST | EXP-Q003 | None |
 | Q-004 | Quant + Execution | Cross-strategy intent netting and cooperative transaction-cost coordination | B+ Stanford optimization manuscript/code precedent | TEST / REFERENCE | EXP-Q004 | None |
 
+## Cycle 034 research extensions
+
+| Parent ID | Hypothesis | Experiment | Evidence | Status | Production impact |
+|---|---|---|---|---|---|
+| DI-003 | H-DI003-SEMANTIC — value vintage without semantic/schema vintage can produce false PIT replay | EXP-DI003-SEMANTIC | A — Federal Reserve + FRED/ALFRED primary docs | TEST | None |
+| AIML-005 | H-AIML005-EVIDENCE — answer accuracy overstates reliability when required evidence coverage is incomplete | EXP-AIML005-EVIDENCE | B+ — controlled finance benchmark evidence | TEST | None |
+
+Traceability:
+- Federal Reserve/FRED-ALFRED semantic-vintage research -> H-DI003-SEMANTIC -> EXP-DI003-SEMANTIC -> PENDING -> ADOPT/REJECT/REVISIT.
+- FinRCA-Bench and supporting finance-agent benchmark research -> H-AIML005-EVIDENCE -> EXP-AIML005-EVIDENCE -> PENDING -> ADOPT/REJECT/REVISIT.
+
+No new canonical research ID is created in Cycle 034; these are scoped extensions of DI-003 and AIML-005.
+
 ## Core lineage rules
 Every experiment result links to its research ID. `ADOPT` requires recorded result evidence and implementation scope. `REJECT` preserves the reason; `REVISIT` records the condition for another test. Generated/rejected candidates remain in the trial-family history so multiple-testing diagnostics remain meaningful.
 
@@ -64,8 +77,14 @@ Display ticker/symbol is not canonical economic identity. Research and replay sh
 ### Evaluator-integrity rule — Cycle 013
 An LLM judge score is not self-validating evidence. Whenever a promotion criterion can be checked deterministically or executably, that path takes precedence over probabilistic judging. Non-verifiable criteria require versioned evaluator provenance and BO-domain calibration against hidden human/executable gold where practical. Raw agreement or test-retest consistency alone is insufficient; report chance-corrected agreement and task/rubric-specific error estimates. Preserve raw traces independently of verdicts so runs can be re-judged after evaluator changes. Candidate-authored reasoning is evidence input, not trusted ground truth, and must not be allowed to manipulate the evaluator.
 
+### Semantic-vintage rule — Cycle 034
+For mutable/versioned data sources, point-in-time validity includes semantic identity, not only the observation value. Where source semantics can change, replay should preserve the applicable release/vintage plus schema/data-dictionary identity and any effective/knowledge-time crosswalk. A current taxonomy silently applied to a historical value snapshot is not considered proven PIT.
+
+### Evidence-contract rule — Cycle 034
+A correct agent answer is not by itself proof of an auditable reasoning path. Where deterministic evidence requirements can be defined, AIML-005 evaluation should score required-evidence coverage separately from final-answer correctness and attribute failures to retrieval versus reasoning before architecture promotion.
+
 ## Current queue
-1. **EXP-DI001 + EXP-DI003** — implement minimal `bo.experiment.v1` validator and point-in-time feature manifest; blind-replay a representative KRX experiment with seeded leakage.
+1. **EXP-DI001 + EXP-DI003** — implement minimal `bo.experiment.v1` validator and point-in-time feature manifest; blind-replay a representative KRX experiment with seeded leakage, including one semantic-vintage/schema-crosswalk fault from EXP-DI003-SEMANTIC.
 2. **EXP-EV006** — implement sandbox-only `bo.order_gate.v1`; replay valid paper orders plus seeded quantity, duplicate, stale-data, outlier-price, loss-limit and retry failures. No live orders.
 3. **EXP-EV007** — generate `bo.audit_bundle.v1` on the same KRX fixture; require blind reconstruction plus seeded contamination/constraint/cost/ID-failure detection.
 4. **EXP-EV008** — disposable agent/tool sandbox with indirect-prompt-injection and privilege/scope-escape fault injection; no production credentials.

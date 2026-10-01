@@ -90,3 +90,17 @@ No production trading, paper-trading, credential, connector permission, strategy
 
 ## Highest-priority next action
 Implementation still outranks literature accumulation: execute **EXP-DI001 + EXP-DI003** first on the seeded KRX replay fixture. In the agent-evaluation lane, freeze the AIML-005 golden tasks before testing Council variants, then build the **EV-009 hidden calibration subset and evaluator manifest** so future AIML-006/007 results are not promoted on an unvalidated judge.
+
+## Cycle 038 research addendum — 2026-10-02
+
+No new canonical ID. Existing owners are extended rather than duplicated.
+
+- **AIML-001 / AIML-005 / EV-003 / EV-005 / DI-003 — TEST / REFERENCE:** Agentic Empirical Asset Pricing motivates evaluation of the discovery *process*, not only surviving factors. Trace: `AEAP research → H-AIML001-ROLLING → EXP-AIML001-ROLLING → PENDING → ADOPT/REJECT/REVISIT`. Rolling re-execution must freeze each historical cutoff, complete trial family, memory state, generator/tool/model versions and next untouched OOS window.
+- **AIML-005 / DI-003 / DI-005 — TEST / REFERENCE:** Fin-RATE motivates preregistered single-period vs longitudinal vs cross-entity task strata. Trace: `Fin-RATE → H-AIML005-LONG → EXP-AIML005 amendment → PENDING → ADOPT/REJECT/REVISIT`.
+- **Q-002 / EV-001 — REFERENCE / REVISIT:** nonlinear market-impact modeling is a challenger only after the simple execution baseline is reproducible; compare fee-only, spread/slippage and simple square-root impact on identical intents.
+- **D-005 — TEST / REFERENCE:** uncertainty displays should be tested for correct oversight action, not only comprehension. Compare confidence-only, uncertainty-detail and uncertainty→action binding; EV-006 deterministic authority remains independent.
+
+### Queue amendment
+The queue order does not change. **EXP-DI001 + EXP-DI003 remains first.** Once it produces a replayable RESULT, run a deliberately small `EXP-AIML001-ROLLING` pilot with a simple non-agentic generator versus the current BO discovery candidate under identical PIT cutoffs, trial budgets and OOS windows. Do not scale Strategy Factory/Genome before this comparison.
+
+No production trading, paper-trading, credential, strategy-ranking, model-routing, Council, sizing or execution behavior changed.

@@ -280,6 +280,38 @@ export const selectRevisionAsOf = <TPayload>(
 };
 
 /**
+ * Resolve the revision actually consumed by an artifact. Unlike latest-as-of
+ * selection, a later eligible correction must never replace this identity.
+ * Missing/ineligible lineage returns null; ambiguous identity fails closed.
+ * The detached result cannot mutate the caller's canonical record collection.
+ */
+export const selectExactRevisionAsOf = <TPayload>(
+  records: readonly CanonicalDataEnvelope<TPayload>[],
+  reference: Pick<CanonicalRevisionIdentity, 'logicalRecordId' | 'revisionId'>,
+  asOf: string,
+): CanonicalDataEnvelope<TPayload> | null => {
+  if (!nonEmpty(reference?.logicalRecordId) || !nonEmpty(reference?.revisionId)) {
+    return null;
+  }
+
+  const matches = records.filter((record) =>
+    record.revision.logicalRecordId === reference.logicalRecordId
+    && record.revision.revisionId === reference.revisionId);
+  const exact = matches[0];
+  if (!exact) return null;
+  if (matches.some((record) => !isDeepStrictEqual(exact, record))) {
+    throw new Error(
+      `conflicting Canonical revision identity: ${reference.logicalRecordId}:${reference.revisionId}`,
+    );
+  }
+  if (exact.contractVersion !== CANONICAL_DATA_CONTRACT_VERSION
+    || !assessPointInTime(exact, asOf).eligible) {
+    return null;
+  }
+  return structuredClone(exact);
+};
+
+/**
  * Compatibility projection for the existing Canonical Event Ledger.
  *
  * IMPORTANT: the legacy row does not prove when BLACK ORACLE first observed a

@@ -20,7 +20,7 @@ A persisted forecast history record MUST contain:
 - `methodId`, `methodVersion`, `methodFamily`.
 - `asOf` — decision/knowledge cutoff used by the forecast.
 - `createdAt` / `ingestedAt` where applicable; these must not be used to backdate knowledge before `asOf`.
-- `inputEvidenceIds[]` and, when available, exact Evidence revision identities.
+- `inputEvidenceIds[]` and the exact canonical `logicalRecordId` + `revisionId` binding for every Evidence input actually consumed. Exact revision identities are mandatory for a fully identified, PIT-valid history record; a logical Evidence ID alone is insufficient.
 - `reasonSummary`.
 - `availabilityState` and any explicit degraded/unavailable reason.
 - the kind-specific forecast payload. FUTURE_PRICE preserves `horizonRef`; FAIR_VALUE must not acquire one merely for storage convenience.
@@ -53,6 +53,8 @@ Realized price/outcome is a later observation linked to a forecast; it is not a 
 - Later-known Evidence or corrections cannot enter an earlier forecast reconstruction.
 - Missing historical lineage fails closed or is marked legacy/incomplete; it is never synthesized.
 - History preserves method/version, Evidence identity/revision, artifact kind, and original as-of.
+- A consumed revision remains bound even if another revision of the same logical Evidence was already known before `asOf`. Latest-as-of selection proves eligibility, not which revision the forecast consumed.
+- Records without exact consumed revision bindings remain explicitly legacy/incomplete and cannot enter the normal PIT-valid write/read path. No current/latest revision may be inferred to complete them.
 - Application logs alone are not sufficient historical truth.
 
 ## 6. Minimal interface semantics
@@ -73,9 +75,15 @@ Independent QA should verify at minimum:
 
 - two forecasts for the same asset preserve separate identities/versions;
 - a later Evidence correction cannot change an earlier as-of reconstruction;
+- if r1 was consumed while r2 was also eligible at the original cutoff, reconstruction returns r1, never the latest eligible r2;
 - historical retrieval returns the original method/version and Evidence IDs;
 - FAIR_VALUE and FUTURE_PRICE can coexist without collapse;
 - later realized outcome remains linked but does not mutate the forecast;
 - missing PIT/version lineage fails closed or remains explicitly incomplete;
 - no Strategy/Risk/PAPER/LIVE authority is introduced.
 
+## 8. CT-01 implementation boundary
+
+`selectExactRevisionAsOf` in `server/foundation/canonicalData.ts` resolves a supplied exact canonical reference at the forecast's original cutoff and fails closed on missing, conflicting, unsupported, or PIT-ineligible data. It does not select the newest revision or invent a missing reference. The caller must obtain the reference from the actual producer's consumed inputs, not from a later lookup.
+
+This helper and its regression tests cover exact canonical revision resolution only. They do not implement Forecast History persistence/API, Evidence-to-canonical producer mapping, method/ Reliability adapters, or the full Golden Trace. Those remain subject to their upstream contracts and independent QA gates.

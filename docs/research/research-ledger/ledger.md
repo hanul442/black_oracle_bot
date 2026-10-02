@@ -90,3 +90,17 @@ No production trading, paper-trading, credential, connector permission, strategy
 
 ## Highest-priority next action
 Implementation still outranks literature accumulation: execute **EXP-DI001 + EXP-DI003** first on the seeded KRX replay fixture. In the agent-evaluation lane, freeze the AIML-005 golden tasks before testing Council variants, then build the **EV-009 hidden calibration subset and evaluator manifest** so future AIML-006/007 results are not promoted on an unvalidated judge.
+
+## Cycle 040 research extensions — 2026-10-02
+No new canonical ID; existing owners were extended to avoid ledger inflation.
+
+- **Q-002 / H-Q002-PATH -> EXP-Q002-PATH -> PENDING -> ADOPT/REJECT/REVISIT.** Peer-reviewed 2026 evidence suggests previous-output conditioning can create implicit switching-cost aversion in supervised trading models. Test against both independent prediction and a simpler post-hoc hysteresis/no-trade baseline under BO PIT/cost/regime stress before any adoption.
+- **DI-003 / H-DI003-TAXONOMY -> EXP-DI003-TAXONOMY -> PENDING -> ADOPT/REJECT/REVISIT.** SEC EDGAR 26.3 demonstrates live taxonomy version turnover. Add taxonomy/parser/crosswalk-version faults to PIT replay so semantic leakage cannot pass merely because observation values are historically dated.
+- **AIML-005 + EV-009 / H-AIML005-HARDNEG -> EXP-AIML005 amendment -> PENDING -> ADOPT/REJECT/REVISIT.** Add entity/period/context-matched hard negatives and score final-answer correctness separately from evidence correctness.
+- **EV-008 REFERENCE/REVISIT.** NIST NCCoE's 2026-09-29 agent identity/authorization implementation update reinforces runtime identity/authz boundaries; revisit when concrete implementation artifacts are released.
+- **D-005 REVIEWED.** No new UI subsystem; Why/Audit should distinguish verified evidence from correct-answer/wrong-evidence states when the underlying validation artifacts exist.
+
+### Cycle 040 queue amendment
+Queue item 1 remains **EXP-DI001 + EXP-DI003**. Include one taxonomy-version/parser-crosswalk semantic fault in the seeded PIT fixture. EXP-Q002-PATH remains downstream of the trustworthy replay/execution-cost harness.
+
+No production or paper-trading behavior changed.

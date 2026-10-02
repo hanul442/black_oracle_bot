@@ -1,4 +1,7 @@
 > [!IMPORTANT]
+> **Proj. North Star (REVIEW, 2026-10-02):** 승인되면 이 로드맵의 Alpha 범위와 일정은 [North Star](https://github.com/hanul442/black_oracle_report/blob/claude/busy-ramanujan-yrcmb7/docs/NORTH_STAR.md) §9·§10으로 대체돼요.
+
+> [!IMPORTANT]
 > **SUPERSEDED AS TOP-LEVEL ARCHITECTURE — 2026-09-24**
 >
 > BLACK ORACLE Architecture **FROZEN v1** is now the canonical top-level product/architecture baseline. The BOT/BOR split below remains useful as historical runtime and repository context, but it must not override the six-domain architecture or authorize implementation that conflicts with Frozen v1.

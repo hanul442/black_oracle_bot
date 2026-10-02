@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> **Proj. North Star (REVIEW, 2026-10-02):** 승인되면 이 로드맵의 Alpha 범위와 일정은 [North Star](https://github.com/hanul442/black_oracle_report/blob/claude/busy-ramanujan-yrcmb7/docs/NORTH_STAR.md) §9·§10으로 대체돼요.
+> **Proj. North Star (APPROVED, 2026-10-02):** 이 로드맵의 Alpha 범위와 일정은 [North Star](https://github.com/hanul442/black_oracle_report/blob/main/docs/NORTH_STAR.md) §9·§10으로 대체됐어요. Closed Alpha는 2026-11-18이에요.
 
 > [!IMPORTANT]
 > **SUPERSEDED AS TOP-LEVEL ARCHITECTURE — 2026-09-24**

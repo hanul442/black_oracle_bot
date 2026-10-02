@@ -1,7 +1,7 @@
 # BLACK ORACLE UI V11
 
 > [!IMPORTANT]
-> **Proj. North Star (REVIEW, 2026-10-02):** 승인되면 정보 구조(IA)는 [North Star](https://github.com/hanul442/black_oracle_report/blob/claude/busy-ramanujan-yrcmb7/docs/NORTH_STAR.md) §5로 대체돼요. 이 문서의 모션·스크롤·런타임 보호 규칙은 계속 참고 기준이에요.
+> **Proj. North Star (APPROVED, 2026-10-02):** 정보 구조(IA)는 [North Star](https://github.com/hanul442/black_oracle_report/blob/main/docs/NORTH_STAR.md) §5로 대체됐어요. 이 문서의 모션·스크롤·런타임 보호 규칙은 계속 참고 기준이에요.
 
 
 ## Approved direction

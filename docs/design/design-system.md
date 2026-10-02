@@ -1,7 +1,7 @@
 # BLACK ORACLE Mobile Product Design System v2
 
 > [!IMPORTANT]
-> **Proj. North Star (REVIEW, 2026-10-02):** 승인되면 내비게이션(Home / Report / AutoTrade / Community)은 [North Star](https://github.com/hanul442/black_oracle_report/blob/claude/busy-ramanujan-yrcmb7/docs/NORTH_STAR.md) §5의 IA로 대체돼요. 시각 톤(화이트·아이보리·골드), 상태 표기, 컴포넌트 원칙은 계속 유효해요.
+> **Proj. North Star (APPROVED, 2026-10-02):** 내비게이션(Home / Report / AutoTrade / Community)은 [North Star](https://github.com/hanul442/black_oracle_report/blob/main/docs/NORTH_STAR.md) §5의 IA로 대체됐어요. 시각 톤(화이트·아이보리·골드), 상태 표기, 컴포넌트 원칙은 계속 유효해요.
 
 
 Status: REDESIGN BASELINE

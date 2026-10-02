@@ -1,7 +1,7 @@
 # BLACK ORACLE BOT
 
 > [!IMPORTANT]
-> **Proj. North Star (REVIEW, 2026-10-02):** [North Star](https://github.com/hanul442/black_oracle_report/blob/claude/busy-ramanujan-yrcmb7/docs/NORTH_STAR.md)가 승인되면 이 저장소의 기능은 `black_oracle_report`로 선별 이식되고, 이 README의 Alpha 정의와 `docs/ALPHA_ROADMAP.md`는 역사 기록이 돼요. 이식이 끝나기 전까지 PAPER 런타임은 이 저장소에서 그대로 운영돼요(North Star §8).
+> **Proj. North Star (APPROVED, 2026-10-02):** [North Star](https://github.com/hanul442/black_oracle_report/blob/main/docs/NORTH_STAR.md)가 BLACK ORACLE의 단일 실행 기준이에요. 이 저장소의 기능은 `black_oracle_report`로 선별 이식 중이고, 이 README의 Alpha 정의와 `docs/ALPHA_ROADMAP.md`는 역사 기록이에요. 이식이 끝날 때까지 PAPER 런타임은 이 저장소에서 그대로 운영되고, `main`은 버그 수정만 받아요(North Star §8).
 
 
 **Auditable automated trading engine for strategy validation, deterministic risk, controlled execution, and decision replay.**

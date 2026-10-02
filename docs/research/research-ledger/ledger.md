@@ -90,3 +90,14 @@ No production trading, paper-trading, credential, connector permission, strategy
 
 ## Highest-priority next action
 Implementation still outranks literature accumulation: execute **EXP-DI001 + EXP-DI003** first on the seeded KRX replay fixture. In the agent-evaluation lane, freeze the AIML-005 golden tasks before testing Council variants, then build the **EV-009 hidden calibration subset and evaluator manifest** so future AIML-006/007 results are not promoted on an unvalidated judge.
+
+## Cycle 041 decision — 2026-10-03
+No new canonical ID. AISI frontier-system evidence strengthens the case that capability and safeguard robustness must be promoted independently, so **H-EV008-CAPSAFE / EXP-EV008-CAPSAFE** is added under EV-008. NIST measurement-probe research adds **H-EV009-PROBE / EXP-EV009-PROBE** under EV-009 using optional probe metadata in existing traces rather than a second ledger. The SEC Draft 2027 taxonomy lifecycle is a primary-source reference for the existing DI-003 semantic-PIT/taxonomy-version experiment. D-005 gains a two-axis capability/safeguard presentation test.
+
+Traceability:
+- AISI evidence → H-EV008-CAPSAFE → EXP-EV008-CAPSAFE → PENDING → ADOPT / REJECT / REVISIT
+- NIST probes → H-EV009-PROBE → EXP-EV009-PROBE → PENDING → ADOPT / REJECT / REVISIT
+- SEC taxonomy lifecycle → EXP-DI003-TAXONOMY amendment → PENDING
+- D-005 two-axis UX → H-D005-CAPSAFE → EXP-D005 amendment → PENDING
+
+Production impact: none. Highest priority remains EXP-DI001 + EXP-DI003 to RESULT on the seeded KRX replay fixture.

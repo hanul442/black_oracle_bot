@@ -1,5 +1,8 @@
 # Forecast History Read/Write Contract v1
 
+> [!IMPORTANT]
+> **SUPERSEDED 2026-10-03** by [Forecast History Contract v2](https://github.com/hanul442/black_oracle_report/blob/main/docs/contracts/FORECAST_HISTORY_CONTRACT_V2.md) (black_oracle_report). v2 makes the exact consumed Evidence revision mandatory (CT-01) and keeps records without it out of point-in-time reads.
+
 **Task:** BO-S1-013  
 **Status:** REVIEW / READY FOR INDEPENDENT QA  
 **Authority:** BLACK_ORACLE_CANONICAL_FROZEN_V1 Forecast + Institutional Memory; BO-S1-010/012 approved S1 contracts  

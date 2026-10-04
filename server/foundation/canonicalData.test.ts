@@ -5,6 +5,7 @@ import {
   assessPointInTime,
   projectLegacyCanonicalEventTemporal,
   selectRevisionAsOf,
+  selectExactRevisionAsOf,
   type CanonicalDataEnvelope,
 } from './canonicalData';
 
@@ -141,4 +142,81 @@ test('Point-in-Time requires a valid eventTime without treating future eventTime
   const result = assessPointInTime(invalid, '2026-09-10T00:00:00.000Z');
   assert.equal(result.eligible, false);
   assert.equal(result.reason, 'EVENT_TIME_INVALID');
+});
+
+const consumedReference = { logicalRecordId: 'macro:cpi:2026-08', revisionId: 'rev-1' };
+const historyCutoff = '2026-09-02T00:00:00.000Z';
+
+test('CT-01: reconstruction preserves consumed r1 when r2 was also known before the forecast cutoff', () => {
+  const initial = record();
+  const correction = record({
+    revision: { ...consumedReference, revisionId: 'rev-2', supersedesRevisionId: 'rev-1' },
+    temporal: {
+      eventTime: initial.temporal.eventTime,
+      observedAt: '2026-09-01T02:00:00.000Z',
+      ingestedAt: '2026-09-01T02:00:05.000Z',
+    },
+    payload: { value: 'corrected' },
+  });
+  const records = [initial, correction];
+  assert.equal(selectRevisionAsOf(records, consumedReference.logicalRecordId, historyCutoff)?.revision.revisionId, 'rev-2');
+  assert.deepEqual(selectExactRevisionAsOf(records, consumedReference, historyCutoff), initial);
+  assert.deepEqual(selectExactRevisionAsOf([correction, initial], consumedReference, historyCutoff), initial);
+});
+
+test('exact reconstruction never fills missing lineage with the current eligible revision', () => {
+  const records = [record()];
+  for (const reference of [
+    { ...consumedReference, revisionId: '' },
+    { ...consumedReference, revisionId: 'missing' },
+    { ...consumedReference, logicalRecordId: '' },
+    { ...consumedReference, logicalRecordId: 'another-evidence' },
+  ]) assert.equal(selectExactRevisionAsOf(records, reference, historyCutoff), null);
+});
+
+test('exact revision still requires original observed/ingested eligibility and cannot use old publication time', () => {
+  const initial = record();
+  const later = record({
+    temporal: {
+      ...initial.temporal,
+      sourcePublishedAt: '2026-08-01T00:00:00.000Z',
+      observedAt: '2026-09-03T00:00:00.000Z',
+      ingestedAt: '2026-09-03T00:00:05.000Z',
+    },
+  });
+  assert.equal(selectExactRevisionAsOf([later], consumedReference, historyCutoff), null);
+  assert.equal(selectExactRevisionAsOf([initial], consumedReference, '2026-09-01T01:00:02.000Z'), null);
+  assert.equal(selectExactRevisionAsOf([initial], consumedReference, 'invalid'), null);
+  assert.deepEqual(selectExactRevisionAsOf([initial], consumedReference, initial.temporal.ingestedAt), initial);
+});
+
+test('ambiguous exact identity is rejected even if one conflicting record was learned after cutoff', () => {
+  const initial = record();
+  const conflict = record({ payload: { value: 'rewritten' } });
+  const futureConflict = record({
+    temporal: { ...initial.temporal, ingestedAt: '2026-09-03T00:00:00.000Z' },
+  });
+  for (const conflicting of [conflict, futureConflict]) {
+    for (const records of [[initial, conflicting], [conflicting, initial]]) {
+      assert.throws(() => selectExactRevisionAsOf(records, consumedReference, historyCutoff), /conflicting Canonical revision identity/);
+    }
+  }
+  assert.deepEqual(selectExactRevisionAsOf([initial, structuredClone(initial)], consumedReference, historyCutoff), initial);
+});
+
+test('exact resolution rejects unsupported contract and invalid temporal order', () => {
+  const unsupported = record({ contractVersion: 'bo.canonical-data.v0' as typeof CANONICAL_DATA_CONTRACT_VERSION });
+  const unordered = record({ temporal: { ...record().temporal, ingestedAt: '2026-09-01T00:00:00.000Z' } });
+  assert.equal(selectExactRevisionAsOf([unsupported], consumedReference, historyCutoff), null);
+  assert.equal(selectExactRevisionAsOf([unordered], consumedReference, historyCutoff), null);
+});
+
+test('exact revision resolution returns detached data and leaves source input untouched', () => {
+  const initial = record();
+  const before = structuredClone(initial);
+  const selected = selectExactRevisionAsOf([initial], consumedReference, historyCutoff)!;
+  selected.payload.value = 'caller mutation';
+  selected.revision.revisionId = 'caller-revision';
+  assert.deepEqual(initial, before);
+  assert.deepEqual(selectExactRevisionAsOf([initial], consumedReference, historyCutoff), before);
 });
